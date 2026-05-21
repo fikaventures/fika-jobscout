@@ -13,6 +13,7 @@ import { fetchAshbyJobs } from "./scrapers/ashby";
 import { fetchBreezyJobs } from "./scrapers/breezy";
 import { fetchBambooJobs } from "./scrapers/bamboohr";
 import { fetchRipplingJobs } from "./scrapers/rippling";
+import { fetchWorkdayJobs } from "./scrapers/workday";
 
 // ============================================================
 // CONFIGURATION - Edit this section!
@@ -75,8 +76,9 @@ export const FILTERS = {
 
 export interface CompanyConfig {
   name: string;
-  ats: "greenhouse" | "lever" | "ashby" | "breezy" | "bamboohr" | "rippling";
+  ats: "greenhouse" | "lever" | "ashby" | "breezy" | "bamboohr" | "rippling" | "workday";
   slug: string;
+  workdaySite?: string; // required when ats === "workday"
 }
 
 export interface Job {
@@ -181,6 +183,7 @@ const SCRAPERS = {
   breezy: fetchBreezyJobs,
   bamboohr: fetchBambooJobs,
   rippling: fetchRipplingJobs,
+  workday: fetchWorkdayJobs,
 };
 
 async function scrapeCompany(company: CompanyConfig): Promise<Job[]> {

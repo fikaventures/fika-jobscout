@@ -73,7 +73,7 @@ The **Copy intro blurb** button on each match generates a one-liner you can past
 | Bowery Valuation | Rippling |
 | SubBase | Rippling |
 
-Only works for portcos using one of these 6 ATS platforms (Greenhouse, Lever, Ashby, Breezy, BambooHR, Rippling). To add a company, see below.
+Only works for portcos using one of these 7 ATS platforms (Greenhouse, Lever, Ashby, Breezy, BambooHR, Rippling, Workday). To add a company, see below.
 
 ---
 
@@ -95,6 +95,19 @@ Edit the `COMPANIES` array in `index.ts`:
 | `acme.breezy.hr` | `breezy` | `acme` |
 | `acme.bamboohr.com/careers` | `bamboohr` | `acme` |
 | `ats.rippling.com/acme/jobs` | `rippling` | `acme` |
+| `acme.wd5.myworkdayjobs.com/SiteName` | `workday` | `acme.wd5` |
+
+**Workday companies require one extra field** — `workdaySite`, which is the path segment after the domain:
+
+```typescript
+{ name: "Acme Corp", ats: "workday", slug: "acme.wd5", workdaySite: "SiteName" }
+```
+
+Also add the company's domain to `COMPANY_DOMAINS` in `dashboard.html` so the logo loads correctly:
+
+```javascript
+"Acme Corp": "acme.com",
+```
 
 After adding a company, run the scraper manually once to pull in their current openings:
 
