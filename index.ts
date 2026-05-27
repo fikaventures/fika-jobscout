@@ -47,6 +47,7 @@ export const COMPANIES: CompanyConfig[] = [
   { name: "First Resonance", ats: "ashby", slug: "first-resonance" },
   { name: "Inspectiv",      ats: "ashby", slug: "inspectiv" },
   { name: "Payabli",        ats: "ashby", slug: "payabli" },
+  { name: "Rivora",         ats: "ashby", slug: "rivora" },
   { name: "Sift",           ats: "ashby", slug: "siftstack" },
   { name: "Siro",           ats: "ashby", slug: "siro" },
 
