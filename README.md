@@ -10,13 +10,13 @@ Internal tool for tracking hiring activity across the Fika Ventures portfolio.
 
 When we meet someone interesting, it's hard to keep track of what all our portcos are actively hiring for — especially the newer investments where we're still getting up to speed. This tool scrapes job boards across the portfolio every weekday morning so you always have a current picture of who's hiring and for what.
 
-The main use case is the **Find Roles** tab: paste a LinkedIn profile and it ranks every open role across the portfolio by fit. Instead of manually checking 30 job boards, you get a ranked list in a few seconds.
+The main use case is the **Find Roles** tab: paste a LinkedIn profile and it ranks every open role across the portfolio by fit. Instead of manually checking 31 job boards, you get a ranked list in a few seconds.
 
 ---
 
 ## What it does
 
-- **Scrapes job boards** across 30 portfolio companies every weekday at 9am UTC
+- **Scrapes job boards** across 31 portfolio companies every weekday at 9am UTC
 - **Slack notifications** when a new role is posted
 - **Web dashboard** to see hiring trends, browse open roles, and filter by function/seniority
 - **Candidate matching** — paste a LinkedIn profile, get the top 10 role matches ranked by fit with a one-click intro blurb
@@ -64,6 +64,7 @@ The **Copy intro blurb** button on each match generates a one-liner you can past
 | First Resonance | Ashby |
 | Inspectiv | Ashby |
 | Payabli | Ashby |
+| Rivora | Ashby |
 | Sift | Ashby |
 | Siro | Ashby |
 | Accorded | Breezy HR |
@@ -79,11 +80,13 @@ Only works for portcos using one of these 7 ATS platforms (Greenhouse, Lever, As
 
 ## Adding or removing a company
 
-Edit the `COMPANIES` array in `index.ts`:
+Edit the `COMPANIES` array in `index.ts` — this is the single source of truth for both scraping and logos:
 
 ```typescript
-{ name: "Siro", ats: "ashby", slug: "siro" }
+{ name: "Acme Corp", ats: "ashby", slug: "acme", domain: "acme.com" }
 ```
+
+The `domain` field powers the company logo in the dashboard. No other file needs to be updated.
 
 **Finding the slug** — look at the company's careers page URL:
 
@@ -100,13 +103,7 @@ Edit the `COMPANIES` array in `index.ts`:
 **Workday companies require one extra field** — `workdaySite`, which is the path segment after the domain:
 
 ```typescript
-{ name: "Acme Corp", ats: "workday", slug: "acme.wd5", workdaySite: "SiteName" }
-```
-
-Also add the company's domain to `COMPANY_DOMAINS` in `dashboard.html` so the logo loads correctly:
-
-```javascript
-"Acme Corp": "acme.com",
+{ name: "Acme Corp", ats: "workday", slug: "acme.wd5", workdaySite: "SiteName", domain: "acme.com" }
 ```
 
 After adding a company, run the scraper manually once to pull in their current openings:

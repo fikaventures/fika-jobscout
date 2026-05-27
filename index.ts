@@ -21,47 +21,47 @@ import { fetchWorkdayJobs } from "./scrapers/workday";
 
 export const COMPANIES: CompanyConfig[] = [
   // Greenhouse
-  { name: "AKKO",          ats: "greenhouse", slug: "akko" },
-  { name: "BuildOps",      ats: "greenhouse", slug: "buildops" },
-  { name: "Chowbus",       ats: "greenhouse", slug: "chowbus" },
-  { name: "Moment Energy", ats: "greenhouse", slug: "momentenergy" },
-  { name: "Noyo",          ats: "greenhouse", slug: "noyocareers" },
-  { name: "Papaya",        ats: "greenhouse", slug: "papaya" },
-  { name: "Sunbound",      ats: "greenhouse", slug: "sunbound" },
+  { name: "AKKO",          ats: "greenhouse", slug: "akko",         domain: "getakko.com" },
+  { name: "BuildOps",      ats: "greenhouse", slug: "buildops",     domain: "buildops.com" },
+  { name: "Chowbus",       ats: "greenhouse", slug: "chowbus",      domain: "chowbus.com" },
+  { name: "Moment Energy", ats: "greenhouse", slug: "momentenergy", domain: "momentenergy.com" },
+  { name: "Noyo",          ats: "greenhouse", slug: "noyocareers",  domain: "noyo.com" },
+  { name: "Papaya",        ats: "greenhouse", slug: "papaya",       domain: "ppaya.com" },
+  { name: "Sunbound",      ats: "greenhouse", slug: "sunbound",     domain: "sunboundhomes.com" },
 
   // Lever
-  { name: "Field AI",      ats: "lever", slug: "field-ai" },
-  { name: "Grid",          ats: "lever", slug: "Grid" },
-  { name: "Ivo",           ats: "lever", slug: "ivo" },
+  { name: "Field AI",      ats: "lever", slug: "field-ai", domain: "fieldai.com" },
+  { name: "Grid",          ats: "lever", slug: "Grid",     domain: "getgrid.app" },
+  { name: "Ivo",           ats: "lever", slug: "ivo",      domain: "ivo.ai" },
 
   // Ashby
-  { name: "Ajax",           ats: "ashby", slug: "ajax" },
-  { name: "Allocate",       ats: "ashby", slug: "allocate" },
-  { name: "Apiphany",       ats: "ashby", slug: "apiphany" },
-  { name: "Artemis",        ats: "ashby", slug: "artemisanalytics" },
-  { name: "Atticus",        ats: "ashby", slug: "atticus" },
-  { name: "Beeble",         ats: "ashby", slug: "beeble" },
-  { name: "Clarify",        ats: "ashby", slug: "clarify" },
-  { name: "Coverbase",      ats: "ashby", slug: "coverbase" },
-  { name: "Dispatch",       ats: "ashby", slug: "dispatch" },
-  { name: "First Resonance", ats: "ashby", slug: "first-resonance" },
-  { name: "Inspectiv",      ats: "ashby", slug: "inspectiv" },
-  { name: "Payabli",        ats: "ashby", slug: "payabli" },
-  { name: "Rivora",         ats: "ashby", slug: "rivora" },
-  { name: "Sift",           ats: "ashby", slug: "siftstack" },
-  { name: "Siro",           ats: "ashby", slug: "siro" },
+  { name: "Ajax",           ats: "ashby", slug: "ajax",           domain: "joinajax.com" },
+  { name: "Allocate",       ats: "ashby", slug: "allocate",       domain: "allocate.co" },
+  { name: "Apiphany",       ats: "ashby", slug: "apiphany",       domain: "apiphany.ai" },
+  { name: "Artemis",        ats: "ashby", slug: "artemisanalytics", domain: "artemis.xyz" },
+  { name: "Atticus",        ats: "ashby", slug: "atticus",        domain: "atticus.com" },
+  { name: "Beeble",         ats: "ashby", slug: "beeble",         domain: "beeble.ai" },
+  { name: "Clarify",        ats: "ashby", slug: "clarify",        domain: "getclarify.ai" },
+  { name: "Coverbase",      ats: "ashby", slug: "coverbase",      domain: "coverbase.com" },
+  { name: "Dispatch",       ats: "ashby", slug: "dispatch",       domain: "dispatch.io" },
+  { name: "First Resonance", ats: "ashby", slug: "first-resonance", domain: "firstresonance.io" },
+  { name: "Inspectiv",      ats: "ashby", slug: "inspectiv",      domain: "inspectiv.com" },
+  { name: "Payabli",        ats: "ashby", slug: "payabli",        domain: "payabli.com" },
+  { name: "Rivora",         ats: "ashby", slug: "rivora",         domain: "rivora.ai" },
+  { name: "Sift",           ats: "ashby", slug: "siftstack",      domain: "siftstack.com" },
+  { name: "Siro",           ats: "ashby", slug: "siro",           domain: "siro.ai" },
 
   // Breezy HR
-  { name: "Accorded",      ats: "breezy", slug: "accorded" },
-  { name: "PathSpot",      ats: "breezy", slug: "pathspot" },
-  { name: "Upwards",       ats: "breezy", slug: "upwardsdotcom" },
+  { name: "Accorded", ats: "breezy", slug: "accorded",      domain: "accorded.com" },
+  { name: "PathSpot", ats: "breezy", slug: "pathspot",      domain: "pathspot.com" },
+  { name: "Upwards",  ats: "breezy", slug: "upwardsdotcom", domain: "upwards.com" },
 
   // BambooHR
-  { name: "Elementary",    ats: "bamboohr", slug: "elementary" },
+  { name: "Elementary", ats: "bamboohr", slug: "elementary", domain: "elementaryml.com" },
 
   // Rippling
-  { name: "Bowery Valuation", ats: "rippling", slug: "bowery-valuation" },
-  { name: "SubBase",          ats: "rippling", slug: "subbase" },
+  { name: "Bowery Valuation", ats: "rippling", slug: "bowery-valuation", domain: "boweryvaluation.com" },
+  { name: "SubBase",          ats: "rippling", slug: "subbase",          domain: "subbase.io" },
 ];
 
 // Optional: Filter jobs by keywords (leave empty arrays to get all jobs)
@@ -79,6 +79,7 @@ export interface CompanyConfig {
   name: string;
   ats: "greenhouse" | "lever" | "ashby" | "breezy" | "bamboohr" | "rippling" | "workday";
   slug: string;
+  domain?: string;
   workdaySite?: string; // required when ats === "workday"
 }
 

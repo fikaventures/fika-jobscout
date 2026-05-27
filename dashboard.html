@@ -872,38 +872,7 @@
 // STATE
 // =============================================================================
 
-const COMPANY_DOMAINS = {
-  "AKKO": "getakko.com",
-  "BuildOps": "buildops.com",
-  "Chowbus": "chowbus.com",
-  "Moment Energy": "momentenergy.com",
-  "Noyo": "noyo.com",
-  "Papaya": "papayaglobal.com",
-  "Sunbound": "sunboundhomes.com",
-  "Field AI": "fieldai.com",
-  "Grid": "getgrid.app",
-  "Ivo": "ivo.ai",
-  "Ajax": "joinajax.com",
-  "Allocate": "allocate.co",
-  "Apiphany": "apiphany.ai",
-  "Artemis": "artemisanalytics.com",
-  "Atticus": "atticus.com",
-  "Beeble": "beeble.ai",
-  "Clarify": "getclarify.ai",
-  "Coverbase": "coverbase.com",
-  "Dispatch": "dispatch.io",
-  "First Resonance": "firstresonance.io",
-  "Inspectiv": "inspectiv.com",
-  "Payabli": "payabli.com",
-  "Sift": "siftstack.com",
-  "Siro": "siro.ai",
-  "Accorded": "accorded.com",
-  "PathSpot": "pathspot.com",
-  "Upwards": "upwards.com",
-  "Elementary": "elementaryml.com",
-  "Bowery Valuation": "boweryvaluation.com",
-  "SubBase": "subbase.io",
-};
+let COMPANY_DOMAINS = {}; // populated at boot from /api/companies/config
 
 const COMPANY_LOGO_OVERRIDES = {
   "Sift":      "https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://siftstack.com&size=64",
@@ -913,7 +882,7 @@ const COMPANY_LOGO_OVERRIDES = {
 function companyLogo(name, size = 20) {
   const override = COMPANY_LOGO_OVERRIDES[name];
   const domain = COMPANY_DOMAINS[name];
-  const src = override || (domain ? `https://icon.horse/icon/${domain}` : null);
+  const src = override || (domain ? `https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${domain}&size=64` : null);
   if (!src) return `<span class="co-initial" style="width:${size}px;height:${size}px;font-size:${Math.round(size*0.45)}px">${esc(name[0])}</span>`;
   return `<img src="${src}" width="${size}" height="${size}" class="co-logo"
     onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'"
@@ -1523,10 +1492,15 @@ function setupEvents() {
 async function init() {
   setupEvents();
 
-  const [stats, jobs] = await Promise.all([
+  const [stats, jobs, companyConfig] = await Promise.all([
     fetchJson("/api/stats"),
     fetchJson("/api/jobs?all=1"),
+    fetchJson("/api/companies/config"),
   ]);
+
+  if (Array.isArray(companyConfig)) {
+    companyConfig.forEach(({ name, domain }) => { if (domain) COMPANY_DOMAINS[name] = domain; });
+  }
 
   document.getElementById("stat-companies").textContent = stats.companies ?? 0;
   document.getElementById("stat-active").textContent    = stats.activeJobs ?? 0;

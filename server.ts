@@ -3,6 +3,7 @@ import express from "express";
 import path from "path";
 import Anthropic from "@anthropic-ai/sdk";
 import { initDb, queryRows, queryOne } from "./db";
+import { COMPANIES } from "./index";
 
 const app = express();
 app.use(express.json());
@@ -34,6 +35,11 @@ function startOfWeek(offsetWeeks: number): string {
 // Dashboard HTML
 app.get("/", (_req, res) => {
   res.sendFile(path.join(process.cwd(), "dashboard.html"));
+});
+
+// Company name → domain mapping (single source of truth for logos)
+app.get("/api/companies/config", (_req, res) => {
+  res.json(COMPANIES.map(c => ({ name: c.name, domain: c.domain ?? null })));
 });
 
 // Summary stats
