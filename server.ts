@@ -4,6 +4,7 @@ import path from "path";
 import Anthropic from "@anthropic-ai/sdk";
 import { initDb, queryRows, queryOne } from "./db";
 import { COMPANIES } from "./index";
+import rateLimit from "express-rate-limit";
 
 const app = express();
 app.use(express.json());
@@ -90,22 +91,15 @@ app.get("/api/jobs", async (req, res) => {
       params.push(weeksAgo(days / 7));
     }
     if (company) {
-      const pn = params.length + 1;
       where += ` AND company = ?`;
       params.push(company);
-      // fix pg param number after building sqlite version
-      const pgWhere = where.replace(/\?/g, () => `$${pn}`);
-      const sqliteSql = `SELECT * FROM jobs ${where} ORDER BY first_seen DESC LIMIT 2000`;
-      const pgSql    = `SELECT * FROM jobs ${pgWhere} ORDER BY first_seen DESC LIMIT 2000`;
-      return res.json(await queryRows(sqliteSql, pgSql, params));
     }
 
-    // Build pg variant by numbering ?s
     let n = 0;
     const pgWhere = where.replace(/\?/g, () => `$${++n}`);
     const sqliteSql = `SELECT * FROM jobs ${where} ORDER BY first_seen DESC LIMIT 2000`;
     const pgSql    = `SELECT * FROM jobs ${pgWhere} ORDER BY first_seen DESC LIMIT 2000`;
-    res.json(await queryRows(sqliteSql, pgSql, params));
+    return res.json(await queryRows(sqliteSql, pgSql, params));
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal server error" });
@@ -175,17 +169,31 @@ app.get("/api/trends", async (_req, res) => {
   }
 });
 
+const matchRateLimit = rateLimit({
+  windowMs: 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "Too many requests, please try again in a minute." },
+});
+
 // Candidate-to-role matching (POST so LinkedIn paste text can be large)
-app.post("/api/match", async (req, res) => {
+app.post("/api/match", matchRateLimit, async (req, res) => {
   const { linkedin, context } = req.body as { linkedin?: string; context?: string };
   const profileText = (linkedin || "").trim();
   if (!profileText) {
     return res.status(400).json({ error: "linkedin field is required" });
   }
+  if (profileText.length > 12000) {
+    return res.status(400).json({ error: "Profile text too long" });
+  }
+  if ((context?.length ?? 0) > 1000) {
+    return res.status(400).json({ error: "Context too long" });
+  }
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
-    return res.status(500).json({ error: "ANTHROPIC_API_KEY is not configured" });
+    return res.status(503).json({ error: "AI matching is not available" });
   }
 
   try {
